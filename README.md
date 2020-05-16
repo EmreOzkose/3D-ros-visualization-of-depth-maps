@@ -1,6 +1,6 @@
 ![Info](images/info.png)
 
-# 3D-visualization-of-depth-maps
+# 3D-ros-visualization-of-depth-maps
 3D ROS visualization of depth maps which are created by any depth model such as Monodepth, Packnet, etc.. All steps including build are written one by one. To build source code, **catkin** is used. All required links are added to references. 
 
 ## Requirements
