@@ -35,13 +35,7 @@ int main(int argc, char** argv){
 	
 	// paths
 	String image_folder_root_path = "/home/emre/Programs/packnet-sfm/data/save/depth/KITTI_tiny-kitti_tiny-velodyne/ResNet18_MR_selfsup_K";
-	/*String image_path = image_folder_root_path + "/kitti_tiny_0000000004_rgb.png";
-	String image_depth_path = image_folder_root_path + "/kitti_tiny_0000000004_depth.png";
 
-    Mat image = read_image(image_path, 1);
-	Mat depth = read_image(image_depth_path, 0);
-*/
-	
 	ros::init(argc, argv, "points_and_lines");
 	ros::NodeHandle n;
 	ros::Publisher marker_pub = n.advertise<visualization_msgs::Marker>("visualization_marker", 10);
