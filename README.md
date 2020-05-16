@@ -75,7 +75,7 @@ rosrun rviz rviz
 
 3. Terminal
 ```
-source 
+source devel/setup.bash
 rosrun visualize_depth_map constructing_map.cpp <first frame number> <frequence of frame (unit : Hertz)>
 ```
 
