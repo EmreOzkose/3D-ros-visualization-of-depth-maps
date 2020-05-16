@@ -5,8 +5,8 @@
 - ROS (tests are made with Kinetic)
 
 ## BUILD
+create a workspace folder and create catkin workspace
 '''
-# create a workspace folder and create catkin workspace
 mkdir -p ~/catkin_ws/src
 cd ~/catkin_ws/
 source /opt/ros/kinetic/setup.bash 
