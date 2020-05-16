@@ -50,8 +50,9 @@ rosrun visualize_depth_map constructing_map.cpp <first frame number> <frequence 
 ```
 
 Example:
-```
-rosrun visualize_depth_map constructing_map.cpp 0 30 # means starting from first frame and 30 frame per second
+```python
+# means starting from first frame and 30 frame per second
+rosrun visualize_depth_map constructing_map.cpp 0 30 
 ```
 
 
