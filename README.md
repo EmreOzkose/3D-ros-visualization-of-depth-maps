@@ -89,7 +89,7 @@ rosrun visualize_depth_map constructing_map.cpp 0 30
 ## References
 - [Creating catkin workspace](http://wiki.ros.org/catkin/Tutorials/create_a_workspace)
 - [Creating catkin package](http://wiki.ros.org/ROS/Tutorials/catkin/CreatingPackage)
-- [Ros RViz Tutorial](http://wiki.ros.org/rviz/Tutorials/Markers%3A Points and Lines)
+- [Ros RViz Tutorial](http://wiki.ros.org/rviz/Tutorials/Markers%3A_Points_and_Lines)
 - How to extract depth maps?
     - [Monodepthv2](https://github.com/nianticlabs/monodepth2)
     - [PackNet-sfm](https://github.com/TRI-ML/packnet-sfm)
