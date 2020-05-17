@@ -28,14 +28,44 @@ Mat read_image(String path, int image_color=1){
 	return img;
 }
 
+Vec3i parse_arguments(int argc, char** argv){
+	int start_frame;
+	int end_frame;
+	int rate;
+	cout << argc << endl;
+	if (argc == 1){
+		start_frame = 0;
+		end_frame = 5;
+		rate = 30;
+	}
+	else if(argc == 3){
+		start_frame = stoi(argv[1]);
+		end_frame = stoi(argv[2]);
+		rate = 30;
+	}
+	else{
+		start_frame = stoi(argv[1]);
+		end_frame = stoi(argv[2]);
+		rate = stoi(argv[3]);
+	}
+
+	Vec3i u(start_frame, end_frame, rate);
+
+	return u;
+}
+
 int main(int argc, char** argv){
 	// arguments
-	int start_frame = stoi(argv[1]);
-	int rate = stoi(argv[2]);
+	Vec3i arguments = parse_arguments(argc, argv);
+	int start_frame = arguments.val[0];
+	int end_frame = arguments.val[1];
+	int rate = arguments.val[2];
+	cout << start_frame << " " << end_frame << " " << rate << endl;
 	
 	// paths
-	String image_folder_root_path = "/home/emre/Programs/packnet-sfm/data/save/depth/KITTI_tiny-kitti_tiny-velodyne/ResNet18_MR_selfsup_K";
-
+	String image_folder_root_path = "/home/emre/Programs/packnet-sfm/data/datasets/hacettepe_cs_loop/data";
+	//image_folder_root_path = "/home/emre/Programs/packnet-sfm/data/save/depth/KITTI_tiny-kitti_tiny-velodyne/ResNet18_MR_selfsup_K";
+	
 	ros::init(argc, argv, "points_and_lines");
 	ros::NodeHandle n;
 	ros::Publisher marker_pub = n.advertise<visualization_msgs::Marker>("visualization_marker", 10);
@@ -69,7 +99,7 @@ int main(int argc, char** argv){
 		Mat depth = read_image(image_depth_path, 0);
 		
 		visualization_msgs::Marker points, line_strip, line_list;
-		points.header.frame_id = "/my_frame";
+		points.header.frame_id = "/map";
 		points.header.stamp = ros::Time::now();
 		points.ns = "points_and_lines";
 		points.action = visualization_msgs::Marker::ADD;
@@ -113,7 +143,7 @@ int main(int argc, char** argv){
 		
 		marker_pub.publish(points);
 		r.sleep();
-		if (counter_image==4700) counter_image = start_frame;
+		if (counter_image==end_frame) counter_image = start_frame;
 	}
 	
 	return 0;
