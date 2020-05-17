@@ -76,13 +76,13 @@ rosrun rviz rviz
 3. Terminal
 ```
 source devel/setup.bash
-rosrun visualize_depth_map constructing_map.cpp <first frame number> <frequence of frame (unit : Hertz)>
+rosrun visualize_depth_map constructing_map.cpp <first frame number> <last frame number> <frequence of frame (unit : Hertz)>
 ```
 
 Example:
 ```python
-# means starting from first frame and 30 frame per second
-rosrun visualize_depth_map constructing_map.cpp 0 30 
+# means starting from first frame to 50. frame and 30 frame per second
+rosrun visualize_depth_map constructing_map.cpp 0 50 30 
 ```
 
 
