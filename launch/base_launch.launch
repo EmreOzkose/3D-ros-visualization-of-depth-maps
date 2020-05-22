@@ -1,0 +1,8 @@
+<launch>
+  <param name="sf" value="$(arg ef)" />
+  <param name="ef" value="$(arg ef)" />
+  <param name="ef" value="$(arg rate)" />
+
+  <node name="constructing_map" pkg="using_markers" type="constructing_map" output="screen" args="$(arg sf) $(arg ef) $(arg rate)" />
+  <node pkg="rviz" type="rviz" name="$(anon rviz)" args="-d /home/emre/Workspace/ros_tutorials/rviz/catkin_ws/src/using_markers/rviz/rviz_config.rviz" />
+</launch>

@@ -44,18 +44,23 @@ catkin_create_pkg visualize_depth_map roscpp visualization_msgs
 Add these lines to ~/Catkin_ws/src/visualize_depth_map/CMakeLists.txt
 
 ```
-add_executable(constructing_map src/constructing_map.cpp)
+add_executable(constructing_map src/constructing_map.cpp src/utils.h src/utils.cpp src/camera.h src/camera.cpp)
 target_link_libraries(constructing_map ${catkin_LIBRARIES})
 
 find_package(OpenCV REQUIRED)
 include_directories(${OpenCV_INCLUDE_DIRS})
 target_link_libraries(constructing_map ${OpenCV_LIBS})
+
+find_package(catkin REQUIRED COMPONENTS roslaunch)
+roslaunch_add_file_check(launch)
 ```
 
 #### 3.3.2 Build now
 ```
-cd visualize_depth_map/src
-cp ~/Downloads/3D-ros-visualization-of-depth-maps-master/src/constructing_map.cpp .
+cd visualize_depth_map/
+cp ~/Downloads/3D-ros-visualization-of-depth-maps-master/src/constructing_map.cpp src/
+cp -r ~/Downloads/3D-ros-visualization-of-depth-maps-master/launch .
+cp -r ~/Downloads/3D-ros-visualization-of-depth-maps-master/rviz . 
 cd ~/catkin_ws
 catkin_make
 ```
@@ -89,12 +94,41 @@ rosrun visualize_depth_map constructing_map.cpp 0 50 30
 ## 4 Roslaunch option:
 Launch files are configuration files that help us to open 3 different terminal separately. Instead, we just open 1 terminal and run laundh file, it starts all necessary file and show in a single terminal. Even if 'roscore' is not opened, launch file runs a terminal for roscore. 
 
-Back to 
+Back to step 3.4
 
-## 5 References
+4.1 change **USE_LAUNCH_FILE** as true in **config.h**
+
+4.2 terminal command:
+
+```python
+# sf: start frame
+# ef: end frame
+# rate: frequency of frame
+roslaunch visualize_depth_map base_launch.launch sf:=0 ef:=4 rate:=30
+```
+
+Roslaunch runs `roscore`, `rviz` and `constructing_map.cpp` in a single command. Very cool :astonished: . 
+
+## 5 Camera Calibration
+A calibrated view is also added. If you wanna use calibrated view, change **USE_CAMERA_CALIBRATION** as true in config.h and change **calibration_path** in **constructing_map.cpp**. This view provides a much better 3D sense. Calibration txt format:
+
+```python
+# cam.txt
+fx 0 cx
+0 fy cy
+0 0 1
+```
+
+
+## 6 References
 - [Creating catkin workspace](http://wiki.ros.org/catkin/Tutorials/create_a_workspace)
 - [Creating catkin package](http://wiki.ros.org/ROS/Tutorials/catkin/CreatingPackage)
 - [Ros RViz Tutorial](http://wiki.ros.org/rviz/Tutorials/Markers%3A_Points_and_Lines)
 - How to extract depth maps?
     - [Monodepthv2](https://github.com/nianticlabs/monodepth2)
     - [PackNet-sfm](https://github.com/TRI-ML/packnet-sfm)
+
+## 7 Contact
+Please inform me about any crash or any new idea. World is a better place when we develop together :ok_hand: . 
+### 
+yunusemreozkose@gmail.com

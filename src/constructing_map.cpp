@@ -10,67 +10,37 @@
 #include <cmath>
 #include <exception>
 
+#include "utils.h"
+#include "camera.h"
+
 using namespace std;
 using namespace cv;
 
-Mat read_image(String path, int image_color=1){
-	Mat img;
-	if (image_color == 0)
-		img = imread(path, 0);
-	else
-		img = imread(path);
-
-    if(img.empty())
-    {
-		throw("Could not read the image: " + path);
-    }
-
-	return img;
-}
-
-Vec3i parse_arguments(int argc, char** argv){
-	int start_frame;
-	int end_frame;
-	int rate;
-	cout << argc << endl;
-	if (argc == 1){
-		start_frame = 0;
-		end_frame = 5;
-		rate = 30;
-	}
-	else if(argc == 3){
-		start_frame = stoi(argv[1]);
-		end_frame = stoi(argv[2]);
-		rate = 30;
-	}
-	else{
-		start_frame = stoi(argv[1]);
-		end_frame = stoi(argv[2]);
-		rate = stoi(argv[3]);
-	}
-
-	Vec3i u(start_frame, end_frame, rate);
-
-	return u;
-}
 
 int main(int argc, char** argv){
 	// arguments
 	Vec3i arguments = parse_arguments(argc, argv);
-	int start_frame = arguments.val[0];
-	int end_frame = arguments.val[1];
-	int rate = arguments.val[2];
-	cout << start_frame << " " << end_frame << " " << rate << endl;
-	
+	int start_frame = arguments.val[0], end_frame = arguments.val[1], rate = arguments.val[2];
+
 	// paths
 	String image_folder_root_path = "/home/emre/Programs/packnet-sfm/data/datasets/hacettepe_cs_loop/data";
-	//image_folder_root_path = "/home/emre/Programs/packnet-sfm/data/save/depth/KITTI_tiny-kitti_tiny-velodyne/ResNet18_MR_selfsup_K";
+	string calibration_path = "/home/emre/Programs/packnet-sfm/data/datasets/KITTI_tiny/2011_09_26/2011_09_26_drive_0023_sync/image_02/cam.txt";
+	
+	image_folder_root_path = "/home/emre/Programs/packnet-sfm/data/save/depth/KITTI_tiny-kitti_tiny-velodyne/ResNet18_MR_selfsup_K";
 	
 	ros::init(argc, argv, "points_and_lines");
 	ros::NodeHandle n;
 	ros::Publisher marker_pub = n.advertise<visualization_msgs::Marker>("visualization_marker", 10);
 	ros::Rate r(rate);
-	
+
+	Camera camera;
+	if (USE_CAMERA_CALIBRATION){
+		Mat K = read_calibration(calibration_path);
+		
+		camera.set_k(K);
+		camera.print_name();
+	}
+
 	int counter_image = -1;
 	while (ros::ok())
   	{	
@@ -98,7 +68,7 @@ int main(int argc, char** argv){
 		Mat image = read_image(image_path, 1);
 		Mat depth = read_image(image_depth_path, 0);
 		
-		visualization_msgs::Marker points, line_strip, line_list;
+		visualization_msgs::Marker points;
 		points.header.frame_id = "/map";
 		points.header.stamp = ros::Time::now();
 		points.ns = "points_and_lines";
@@ -125,10 +95,17 @@ int main(int argc, char** argv){
 				//z = (1 - z/255.0) * 255.0;
 				//cout<<x << " " << y << " " << z << endl;
 				geometry_msgs::Point p;
+
+				if (USE_CAMERA_CALIBRATION){}
+					float x = (x - camera.cx) * z / camera.fx;
+					float y = (y - camera.cy) * z / camera.fy;
+					float z = z;
+				}
+
 				p.x = z;
 				p.y = x;
 				p.z = (1-y/255)*255;
-				
+
 				points.points.push_back(p);
 
 				Vec3b intensity = image.at<Vec3b>(j, i);
