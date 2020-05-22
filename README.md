@@ -1,6 +1,6 @@
 ![Info](images/info.png)
 
-# 3D-visualization-of-depth-maps
+# 3D-ros-visualization-of-depth-maps
 3D ROS visualization of depth maps which are created by any depth model such as Monodepth, Packnet, etc.. All steps including build are written one by one. To build source code, **catkin** is used. All required links are added to references. 
 
 ## 1 Requirements
@@ -76,14 +76,14 @@ rosrun rviz rviz
 
 3. Terminal
 ```
-source 
-rosrun visualize_depth_map constructing_map.cpp <first frame number> <frequence of frame (unit : Hertz)>
+source devel/setup.bash
+rosrun visualize_depth_map constructing_map.cpp <first frame number> <last frame number> <frequence of frame (unit : Hertz)>
 ```
 
 Example:
 ```python
-# means starting from first frame and 30 frame per second
-rosrun visualize_depth_map constructing_map.cpp 0 30 
+# means starting from first frame to 50. frame and 30 frame per second
+rosrun visualize_depth_map constructing_map.cpp 0 50 30 
 ```
 
 ## 4 Roslaunch option:
