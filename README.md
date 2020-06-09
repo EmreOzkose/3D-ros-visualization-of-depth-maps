@@ -44,6 +44,15 @@ catkin_create_pkg visualize_depth_map roscpp visualization_msgs
 Add these lines to ~/Catkin_ws/src/visualize_depth_map/CMakeLists.txt
 
 ```
+find_package(catkin REQUIRED COMPONENTS
+  roscpp
+  visualization_msgs
+  image_transport
+  cv_bridge
+  sensor_msgs
+  message_generation
+)
+
 add_executable(constructing_map src/constructing_map.cpp src/utils.h src/utils.cpp src/camera.h src/camera.cpp)
 target_link_libraries(constructing_map ${catkin_LIBRARIES})
 
